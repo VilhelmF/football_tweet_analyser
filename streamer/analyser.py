@@ -1,4 +1,6 @@
 import sys
+import urllib.parse
+
 from pymongo import MongoClient
 from configparser import ConfigParser
 from streamer.rabbitmq import RabbitMQ
@@ -23,10 +25,12 @@ class Analyser:
 
     def init_db(self):
         self.config.read('config.ini')
-        mongo_client = MongoClient(self.config.get('db', 'db_url'))
-        db_connection = mongo_client[self.config.get('db', 'db')]
+        username = urllib.parse.quote_plus(self.config.get('db', 'user'))
+        password = urllib.parse.quote_plus(self.config.get('db', 'password'))
+        mongo_client = MongoClient('mongodb://%s:%s@' % (username, password) + self.config.get('db', 'db_url'))
+        db_connection = mongo_client[self.config.get('db', 'db_name')]
         self.db_collection = db_connection[home_team.replace(' ', '') + away_team.replace(' ', '')]
-        print('Database connection to {}.{} established'.format(self.config.get('db', 'db'), 'test'))
+        print('Database connection to {}.{} established'.format(self.config.get('db', 'db_name'), 'test'))
 
     def init_rabbitmq(self):
         self.config.read('config.ini')

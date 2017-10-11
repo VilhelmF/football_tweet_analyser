@@ -1,6 +1,7 @@
 import csv
 from pymongo import MongoClient
 import urllib.parse
+from configparser import ConfigParser
 
 
 def parse_teams():
@@ -28,10 +29,12 @@ def parse_teams():
 
 
 def save_in_db(teams):
-    username = urllib.parse.quote_plus('tweet_analyzer')
-    password = urllib.parse.quote_plus('3sGbQs5c6RsaL7UB')
-    mongo_client = MongoClient('mongodb://%s:%s@165.227.170.159:27017/tracking?authSource=tweet' % (username, password))
-    db_connection = mongo_client['tweet']
+    config = ConfigParser()
+    config.read('../streamer/config.ini')
+    username = urllib.parse.quote_plus(config.get('db', 'user'))
+    password = urllib.parse.quote_plus(config.get('db', 'password'))
+    mongo_client = MongoClient('mongodb://%s:%s@' % (username, password) + config.get('db', 'db_url'))
+    db_connection = mongo_client[config.get('db', 'db_name')]
     if 'teams' in db_connection.collection_names():
         print('Collection already exists. Aborting.')
         return
