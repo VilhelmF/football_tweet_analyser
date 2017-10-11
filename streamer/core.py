@@ -27,7 +27,8 @@ if __name__ == '__main__':
         config.get('pika', 'rabbitmq_host')
     )
     my_stream_listener.set_queue(rabbitmq, ''.join(param))
-    twitter_topics = ['#' + param[0][:3] + param[1][:3]]
+    # twitter_topics = ['#' + param[0][:3] + param[1][:3]]
+    twitter_topics = ['#WorldMentalHealthDay']
     my_stream = tweepy.Stream(auth=api.auth, listener=my_stream_listener)
     while True:
         try:

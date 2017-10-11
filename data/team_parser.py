@@ -1,5 +1,6 @@
 import csv
 from pymongo import MongoClient
+import urllib.parse
 
 
 def parse_teams():
@@ -27,7 +28,9 @@ def parse_teams():
 
 
 def save_in_db(teams):
-    mongo_client = MongoClient('mongodb://127.0.0.1:27017/')
+    username = urllib.parse.quote_plus('tweet_analyzer')
+    password = urllib.parse.quote_plus('3sGbQs5c6RsaL7UB')
+    mongo_client = MongoClient('mongodb://%s:%s@165.227.170.159:27017/tracking?authSource=tweet' % (username, password))
     db_connection = mongo_client['tweet']
     if 'teams' in db_connection.collection_names():
         print('Collection already exists. Aborting.')
@@ -42,4 +45,4 @@ def save_in_db(teams):
 
 if __name__ == '__main__':
     premier_league_teams = parse_teams()
-    # save_in_db(premier_league_teams)
+    save_in_db(premier_league_teams)
