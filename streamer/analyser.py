@@ -46,12 +46,14 @@ class Analyser:
     def init_rabbitmq(self):
         self.config.read('config.ini')
 
+        # Initialize the RabbitMQ
         self.rabbitmq = RabbitMQ(
             self.config.get('pika', 'rabbitmq_user'),
             self.config.get('pika', 'rabbitmq_pw'),
             self.config.get('pika', 'rabbitmq_host')
         )
 
+        # Initialize a separate rabbitMQ thread for each team to extract information for the tweets
         self.rabbitmq.init_consumer_thread(self.home_team.name, self.tweet_callback)
         self.rabbitmq.init_consumer_thread(self.away_team.name, self.tweet_callback)
 
@@ -62,10 +64,15 @@ class Analyser:
         self.premier_league = PremierLeague()
 
     def tweet_callback(self, ch, method, properties, body):
+
+        # Extract the json from the tweet
         json_body = json.loads(body.decode('utf-8'))
         text = json_body['text']
+
+        # Use TextBlob for sentiment analysis on the tweet and extract the sentiment
         text_blob = TextBlob(text)
         polarity = text_blob.sentiment.polarity
+
         json_body['polarity'] = polarity
         if abs(polarity) > 0.2:
             print('{} | Polarity: {}'.format(text, text_blob.sentiment.polarity))
