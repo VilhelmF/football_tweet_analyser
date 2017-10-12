@@ -5,26 +5,26 @@ from configparser import ConfigParser
 
 
 def get_hashtags():
-    hashtags = {'Bournemouth': ('BOU', ['AFCB']),
-                'Arsenal': ('ARS', ['AFC']),
-                'Brighton & Hove Albion': ('BRI', ['BHAFC']),
-                'Burnley': ('BUR', ['Clarets']),
-                'Chelsea': ('CHE', ['CFC']),
-                'Crystal Palace': ('CRY', ['CPFC']),
-                'Everton': ('EVE', ['EFC']),
-                'Huddersfield Town': ('HUD', ['HTAFC']),
-                'Leicester City': ('LEI', ['LCFC']),
-                'Liverpool': ('LIV', ['LFC', 'LiverpoolFC']),
-                'Manchester City': ('MCI', ['MCFC']),
-                'Manchester United': ('MUN', ['MUFC']),
-                'Newcastle United': ('NEW', ['NUFC']),
-                'Southampton': ('SOU', ['SaintsFC']),
-                'Stoke City': ('STK', ['SCFC']),
-                'Swansea City': ('SWA', ['Swans']),
-                'Tottenham Hotspur': ('TOT', ['COYS', 'THFC', 'Spurs']),
-                'Watford': ('WAT', ['WatfordFC']),
-                'West Bromwich Albion': ('WBA', ['baggies', 'WBAFC']),
-                'West Ham United': ('WHU', ['WHUFC'])
+    hashtags = {'Bournemouth': {'hashtags': ('BOU', ['AFCB']), 'names': []},
+                'Arsenal': {'hashtags': ('ARS', ['AFC']), 'names': []},
+                'Brighton & Hove Albion': {'hashtags': ('BRI', ['BHAFC']), 'names': []},
+                'Burnley': {'hashtags': ('BUR', ['Clarets']), 'names': []},
+                'Chelsea': {'hashtags': ('CHE', ['CFC']), 'names': []},
+                'Crystal Palace': {'hashtags': ('CRY', ['CPFC']), 'names': []},
+                'Everton': {'hashtags': ('EVE', ['EFC']), 'names': []},
+                'Huddersfield Town': {'hashtags': ('HUD', ['HTAFC']), 'names': []},
+                'Leicester City': {'hashtags': ('LEI', ['LCFC']), 'names': []},
+                'Liverpool': {'hashtags': ('LIV', ['LFC', 'LiverpoolFC']), 'names': []},
+                'Manchester City': {'hashtags': ('MCI', ['MCFC']), 'names': []},
+                'Manchester United': {'hashtags': ('MUN', ['MUFC']), 'names': []},
+                'Newcastle United': {'hashtags': ('NEW', ['NUFC']), 'names': []},
+                'Southampton': {'hashtags': ('SOU', ['SaintsFC']), 'names': []},
+                'Stoke City': {'hashtags': ('STK', ['SCFC']), 'names': []},
+                'Swansea City': {'hashtags': ('SWA', ['Swans']), 'names': []},
+                'Tottenham Hotspur': {'hashtags': ('TOT', ['COYS', 'THFC', 'Spurs']), 'names': []},
+                'Watford': {'hashtags': ('WAT', ['WatfordFC']), 'names': []},
+                'West Bromwich Albion': {'hashtags': ('WBA', ['baggies', 'WBAFC']), 'names': []},
+                'West Ham United': {'hashtags': ('WHU', ['WHUFC']), 'names': []}
                 }
     return hashtags
 
