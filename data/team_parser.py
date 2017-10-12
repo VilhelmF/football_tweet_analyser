@@ -4,7 +4,7 @@ import urllib.parse
 from configparser import ConfigParser
 
 
-def get_hashtags():
+def get_extra_values():
     hashtags = {'Bournemouth': {'hashtags': ('BOU', ['AFCB']), 'names': ['Bournemouth']},
                 'Arsenal': {'hashtags': ('ARS', ['AFC']), 'names': ['Arsenal', 'Gunners']},
                 'Brighton & Hove Albion': {'hashtags': ('BRI', ['BHAFC']), 'names': ['Brighton']},
@@ -30,7 +30,7 @@ def get_hashtags():
 
 
 def parse_teams():
-    hashtags = get_hashtags()
+    team_dict = get_extra_values()
     with open('teams.csv', 'r') as csvfile:
         reader = csv.reader(csvfile)
         premier_leage_teams = []
@@ -43,8 +43,9 @@ def parse_teams():
                 continue
             if new_team:
                 team = ''.join(row)
-                ht_tuple = hashtags[team]
-                working_dict = {'team': team, 'players': [], 'game_hashtag': ht_tuple[0], 'hashtags': ht_tuple[1]}
+                ht_tuple = team_dict[team]['hashtags']
+                working_dict = {'team': team, 'players': [], 'game_hashtag': ht_tuple[0],
+                                'hashtags': ht_tuple[1], 'names': team_dict[team]['names']}
                 new_team = False
                 continue
             else:
