@@ -6,7 +6,7 @@ import urllib.parse
 
 class Team:
     def __init__(self, team, *args):
-        self.team = team
+        self.name = team
         self.players = None
         self.game_hashtag = None
         self.hastags = None
@@ -16,7 +16,7 @@ class Team:
         config = ConfigParser()
         config.read('config.ini')
         mongo_client, teams = create_connection(config.get('db', 'team_collection'))
-        team = teams.find_one({'team': self.team})
+        team = teams.find_one({'team': self.name})
         self.players = team['players']
         mongo_client.close()
 

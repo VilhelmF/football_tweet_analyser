@@ -5,14 +5,16 @@ from pymongo import MongoClient
 from configparser import ConfigParser
 from streamer.rabbitmq import RabbitMQ
 from streamer.premier_league import PremierLeague
+from streamer.utils import valid_team
+from streamer.Team import Team
 from textblob import TextBlob
 import json
 
 
 class Analyser:
     def __init__(self, home_team, away_team):
-        self.home_team = home_team
-        self.away_team = away_team
+        self.home_team = Team(home_team)
+        self.away_team = Team(away_team)
         self.config = ConfigParser()
         self.away_team_collection = None
         self.home_team_collection = None
@@ -36,8 +38,8 @@ class Analyser:
         db_connection = mongo_client[self.config.get('db', 'db_name')]
 
         # Get the collections for both teams
-        self.home_team_collection = db_connection[home_team]
-        self.away_team_collection = db_connection[away_team]
+        self.home_team_collection = db_connection[self.home_team.name]
+        self.away_team_collection = db_connection[self.away_team.name]
 
         print('Database connection to {}.{} established'.format(self.config.get('db', 'db_name'), 'test'))
 
@@ -50,10 +52,11 @@ class Analyser:
             self.config.get('pika', 'rabbitmq_host')
         )
 
-        self.rabbitmq.init_consumer_thread(home_team, self.tweet_callback)
-        self.rabbitmq.init_consumer_thread(away_team, self.tweet_callback)
+        self.rabbitmq.init_consumer_thread(self.home_team.name, self.tweet_callback)
+        self.rabbitmq.init_consumer_thread(self.away_team.name, self.tweet_callback)
 
-        print('Rabbit mq connection to {} : {} - {} established'.format(self.config.get('pika', 'rabbitmq_host'), home_team, away_team))
+        print('Rabbit mq connection to {} : {} - {} established'.format(self.config.get('pika', 'rabbitmq_host'),
+                                                                        self.home_team.name, self.away_team.name))
 
     def init_premier_league(self):
         self.premier_league = PremierLeague()
@@ -73,8 +76,16 @@ class Analyser:
         # print('{}: {}'.format(object_id, text))
 
 if __name__ == '__main__':
-    home_team = input('Home Team: ')
-    away_team = input('Away Team: ')
 
-    print('Starting analyser for {} - {}'.format(home_team, away_team))
-    analyser = Analyser(home_team, away_team)
+    config = ConfigParser()
+    config.read('config.ini')
+
+    home_team_name = input('Home Team: ')
+    while not valid_team(config, home_team_name):
+        home_team_name = input('No such team exists. Try again: ')
+    away_team_name = input('Away Team: ')
+    while not valid_team(config, away_team_name):
+        away_team_name = input('No such team exists. Try again: ')
+
+    print('Starting analyser for {} - {}'.format(home_team_name, away_team_name))
+    analyser = Analyser(home_team_name, away_team_name)
