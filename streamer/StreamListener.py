@@ -36,7 +36,7 @@ class MyStreamListener(tweepy.StreamListener):
             # send_tweet('{} : {}'.format(message['author_name'], message['text']))
             str_message = json.dumps(message)
             if self.queue is not None and self.rabbit_mq is not None:
-                print('StreamListener sending message {}'.format(status.text))
+                # print('StreamListener sending message {}'.format(status.text))
                 self.rabbit_mq.publish_message(self.queue, str_message)
                 # send_tweet(self.queue, str_message)
             # print('{} : {}'.format(message['author_name'], message['text']))
