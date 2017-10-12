@@ -10,6 +10,7 @@ class Team:
         self.players = None
         self.game_hashtag = None
         self.hashtags = None
+        self.names = None
         self.db_init()
 
     def db_init(self):
@@ -20,6 +21,7 @@ class Team:
         self.players = team['players']
         self.game_hashtag = team['game_hashtag']
         self.hashtags = team['hashtags']
+        self.names = team['names']
         mongo_client.close()
 
     def is_player(self, words):

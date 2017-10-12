@@ -55,8 +55,8 @@ class Analyser:
 
     def get_team_by_names(self, text):
 
-        home_team_occurrences = [x.lower() for x in self.home_team.hashtags if x in text]
-        away_team_occurrences = [x.lower() for x in self.away_team.hashtags if x in text]
+        home_team_occurrences = [x for x in self.home_team.names if x.lower() in text.lower()]
+        away_team_occurrences = [x for x in self.away_team.names if x.lower() in text.lower()]
 
         if len(home_team_occurrences) != 0 and len(away_team_occurrences) == 0 in text:
             return self.home_team
