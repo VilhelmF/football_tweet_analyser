@@ -4,7 +4,34 @@ import urllib.parse
 from configparser import ConfigParser
 
 
+def get_hashtags():
+    hashtags = {'Bournemouth': ('BOU', ['AFCB']),
+                'Arsenal': ('ARS', ['AFC']),
+                'Brighton & Hove Albion': ('BRI', ['BHAFC']),
+                'Burnley': (),
+                'Chelsea': (),
+                'Crystal Palace': (),
+                'Everton': (),
+                'Huddersfield Town': (),
+                'Leicester City': (),
+                'Liverpool': (),
+                'Manchester City': (),
+                'Manchester United': (),
+                'Newcastle United': (),
+                'Southampton': (),
+                'Stoke City': (),
+                'Swansea City': (),
+                'Tottenham Hotspur': (),
+                'Watford': (),
+                'West Bromwich Albion': (),
+                'West Ham United': (),
+                }
+
+    return hashtags
+
+
 def parse_teams():
+    hashtags = get_hashtags()
     with open('teams.csv', 'r') as csvfile:
         reader = csv.reader(csvfile)
         premier_leage_teams = []
