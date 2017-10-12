@@ -8,25 +8,24 @@ def get_hashtags():
     hashtags = {'Bournemouth': ('BOU', ['AFCB']),
                 'Arsenal': ('ARS', ['AFC']),
                 'Brighton & Hove Albion': ('BRI', ['BHAFC']),
-                'Burnley': (),
-                'Chelsea': (),
-                'Crystal Palace': (),
-                'Everton': (),
-                'Huddersfield Town': (),
-                'Leicester City': (),
-                'Liverpool': (),
-                'Manchester City': (),
-                'Manchester United': ('', ['']),
+                'Burnley': ('BUR', ['Clarets']),
+                'Chelsea': ('CHE', ['CFC']),
+                'Crystal Palace': ('CRY', ['CPFC']),
+                'Everton': ('EVE', ['EFC']),
+                'Huddersfield Town': ('HUD', ['HTAFC']),
+                'Leicester City': ('LEI', ['LCFC']),
+                'Liverpool': ('LIV', ['LFC', 'LiverpoolFC']),
+                'Manchester City': ('MCI', ['MCFC']),
+                'Manchester United': ('MUN', ['MUFC']),
                 'Newcastle United': ('NEW', ['NUFC']),
                 'Southampton': ('SOU', ['SaintsFC']),
                 'Stoke City': ('STK', ['SCFC']),
                 'Swansea City': ('SWA', ['Swans']),
                 'Tottenham Hotspur': ('TOT', ['COYS', 'THFC', 'Spurs']),
                 'Watford': ('WAT', ['WatfordFC']),
-                'West Bromwich Albion': ('WBA', ['WBA', 'baggies', 'WBAFC']),
+                'West Bromwich Albion': ('WBA', ['baggies', 'WBAFC']),
                 'West Ham United': ('WHU', ['WHUFC'])
                 }
-
     return hashtags
 
 
@@ -44,7 +43,8 @@ def parse_teams():
                 continue
             if new_team:
                 team = ''.join(row)
-                working_dict = {'team': team, 'players': []}
+                ht_tuple = hashtags[team]
+                working_dict = {'team': team, 'players': [], 'game_hashtag': ht_tuple[0], 'hashtags': ht_tuple[1]}
                 new_team = False
                 continue
             else:
