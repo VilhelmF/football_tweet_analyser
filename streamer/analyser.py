@@ -48,7 +48,7 @@ class Analyser:
         )
 
         # Initialize a separate rabbitMQ thread for each team to extract information for the tweets
-        self.rabbitmq.init_consumer_thread(self.home_team.name.replace(' ', '') + self.away_team.name.replace(' ', ''),
+        self.rabbitmq.init_consumer_thread(self.home_team.game_hashtag + self.away_team.game_hashtag,
                                            self.tweet_analyser)
         print('Rabbit mq connection to {} : {} - {} established'.format(self.config.get('pika', 'rabbitmq_host'),
                                                                         self.home_team.name, self.away_team.name))
