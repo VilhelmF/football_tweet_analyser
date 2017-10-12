@@ -16,15 +16,15 @@ def get_hashtags():
                 'Leicester City': (),
                 'Liverpool': (),
                 'Manchester City': (),
-                'Manchester United': (),
-                'Newcastle United': (),
-                'Southampton': (),
-                'Stoke City': (),
-                'Swansea City': (),
-                'Tottenham Hotspur': (),
-                'Watford': (),
-                'West Bromwich Albion': (),
-                'West Ham United': (),
+                'Manchester United': ('', ['']),
+                'Newcastle United': ('NEW', ['NUFC']),
+                'Southampton': ('SOU', ['SaintsFC']),
+                'Stoke City': ('STK', ['SCFC']),
+                'Swansea City': ('SWA', ['Swans']),
+                'Tottenham Hotspur': ('TOT', ['COYS', 'THFC', 'Spurs']),
+                'Watford': ('WAT', ['WatfordFC']),
+                'West Bromwich Albion': ('WBA', ['WBA', 'baggies', 'WBAFC']),
+                'West Ham United': ('WHU', ['WHUFC'])
                 }
 
     return hashtags
