@@ -46,8 +46,8 @@ if __name__ == '__main__':
     # Set the topics we want to extract for each team
     tweet_topics = [home_team.name, away_team.name, game_hashtag]
 
-    tweet_topics.extend(home_team.hastags)
-    tweet_topics.extend(away_team.hastags)
+    tweet_topics.extend(home_team.hashtags)
+    tweet_topics.extend(away_team.hashtags)
 
     # Create the stream
     twitter_stream = tweepy.Stream(auth=api.auth, listener=listener)

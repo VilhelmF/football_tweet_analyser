@@ -56,7 +56,7 @@ class Analyser:
     def init_premier_league(self):
         self.premier_league = PremierLeague()
 
-    def tweet_analyser(self, team, body):
+    def tweet_analyser(self, ch, method, properties, body):
 
         # Extract the json from the tweet
         json_body = json.loads(body.decode('utf-8'))
