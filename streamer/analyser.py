@@ -53,10 +53,14 @@ class Analyser:
         print('Rabbit mq connection to {} : {} - {} established'.format(self.config.get('pika', 'rabbitmq_host'),
                                                                         self.home_team.name, self.away_team.name))
 
-    def get_team_by_names(self, nouns):
-        if self.home_team.name.lower() in nouns and self.away_team.name.lower() not in nouns:
+    def get_team_by_names(self, text):
+
+        home_team_occurrences = [x.lower() for x in self.home_team.hashtags if x in text]
+        away_team_occurrences = [x.lower() for x in self.away_team.hashtags if x in text]
+
+        if len(home_team_occurrences) != 0 and len(away_team_occurrences) == 0 in text:
             return self.home_team
-        elif self.home_team.name.lower() not in nouns and self.away_team.name.lower() in nouns:
+        elif len(home_team_occurrences) == 0 and len(away_team_occurrences) != 0 in text:
             return self.away_team
         else:
             return None
@@ -91,13 +95,13 @@ class Analyser:
 
         if tweeted_team is not None:
             # TODO Prediction Magic
-            print('')
+            print('{}: {}'.format(tweeted_team.name, text))
         else:
-            tweeted_team = self.get_team_by_hashtags([x['text'].lower() for x in hashtags])
+            tweeted_team = self.get_team_by_hashtags([x.lower() for x in hashtags])
 
             if tweeted_team is not None:
                 # TODO Prediction Magic
-                print('')
+                print('{}: {}'.format(tweeted_team.name, text))
 
         json_body['polarity'] = polarity
 
