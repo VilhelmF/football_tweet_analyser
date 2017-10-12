@@ -53,6 +53,26 @@ class Analyser:
         print('Rabbit mq connection to {} : {} - {} established'.format(self.config.get('pika', 'rabbitmq_host'),
                                                                         self.home_team.name, self.away_team.name))
 
+    def get_team_by_names(self, nouns):
+        if self.home_team.name.lower() in nouns and self.away_team.name.lower() not in nouns:
+            return self.home_team
+        elif self.home_team.name.lower() not in nouns and self.away_team.name.lower() in nouns:
+            return self.away_team
+        else:
+            return None
+
+    def get_team_by_hashtags(self, hashtags):
+
+        home_team_hashtags = set([x.lower() for x in self.home_team.hashtags])
+        away_team_hashtags = set([x.lower() for x in self.away_team.hashtags])
+
+        if len(home_team_hashtags.intersection(set(hashtags))) == 0 and len(away_team_hashtags.intersection(set(hashtags))) != 0:
+            return self.away_team
+        elif len(away_team_hashtags.intersection(set(hashtags))) == 0 and len(home_team_hashtags.intersection(set(hashtags))) != 0:
+            return self.home_team
+        else:
+            return None
+
     def init_premier_league(self):
         self.premier_league = PremierLeague()
 
@@ -61,14 +81,26 @@ class Analyser:
         # Extract the json from the tweet
         json_body = json.loads(body.decode('utf-8'))
         text = json_body['text']
+        hashtags = json_body['hashtags']
 
         # Use TextBlob for sentiment analysis on the tweet and extract the sentiment
         text_blob = TextBlob(text)
         polarity = text_blob.sentiment.polarity
 
+        tweeted_team = self.get_team_by_names([x.lower() for x in text_blob.noun_phrases])
+
+        if tweeted_team is not None:
+            # TODO Prediction Magic
+            print('')
+        else:
+            tweeted_team = self.get_team_by_hashtags([x['text'].lower() for x in hashtags])
+
+            if tweeted_team is not None:
+                # TODO Prediction Magic
+                print('')
+
         json_body['polarity'] = polarity
 
-        print(json_body)
         # object_id = self.db_collection.insert_one(json_body).inserted_id
         # print('{}: {}'.format(object_id, text))
 
