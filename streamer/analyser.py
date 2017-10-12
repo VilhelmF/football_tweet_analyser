@@ -48,20 +48,13 @@ class Analyser:
         )
 
         # Initialize a separate rabbitMQ thread for each team to extract information for the tweets
-        self.rabbitmq.init_consumer_thread(self.home_team.name, self.home_team_tweet_callback)
-        self.rabbitmq.init_consumer_thread(self.away_team.name, self.away_team_tweet_callback)
-
+        self.rabbitmq.init_consumer_thread(self.home_team.name.replace(' ', '') + self.away_team.name.replace(' ', ''),
+                                           self.tweet_analyser)
         print('Rabbit mq connection to {} : {} - {} established'.format(self.config.get('pika', 'rabbitmq_host'),
                                                                         self.home_team.name, self.away_team.name))
 
     def init_premier_league(self):
         self.premier_league = PremierLeague()
-
-    def home_team_tweet_callback(self, ch, method, properties, body):
-        self.tweet_analyser(self.home_team, body)
-
-    def away_team_tweet_callback(self, ch, method, properties, body):
-        self.tweet_analyser(self.away_team, body)
 
     def tweet_analyser(self, team, body):
 
