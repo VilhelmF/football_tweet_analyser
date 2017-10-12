@@ -23,7 +23,7 @@ def get_hashtags():
                 'Swansea City': ('SWA', ['Swans']),
                 'Tottenham Hotspur': ('TOT', ['COYS', 'THFC', 'Spurs']),
                 'Watford': ('WAT', ['WatfordFC']),
-                'West Bromwich Albion': ('WBA', ['WBA', 'baggies', 'WBAFC']),
+                'West Bromwich Albion': ('WBA', ['baggies', 'WBAFC']),
                 'West Ham United': ('WHU', ['WHUFC'])
                 }
     return hashtags
@@ -43,7 +43,8 @@ def parse_teams():
                 continue
             if new_team:
                 team = ''.join(row)
-                working_dict = {'team': team, 'players': []}
+                ht_tuple = hashtags[team]
+                working_dict = {'team': team, 'players': [], 'game_hashtag': ht_tuple[0], 'hashtags': ht_tuple[1]}
                 new_team = False
                 continue
             else:

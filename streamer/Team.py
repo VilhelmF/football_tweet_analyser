@@ -9,7 +9,7 @@ class Team:
         self.name = team
         self.players = None
         self.game_hashtag = None
-        self.hastags = None
+        self.hashtags = None
         self.db_init()
 
     def db_init(self):
@@ -18,6 +18,8 @@ class Team:
         mongo_client, teams = create_connection(config.get('db', 'team_collection'))
         team = teams.find_one({'team': self.name})
         self.players = team['players']
+        self.game_hashtag = team['game_hashtag']
+        self.hashtags = team['hashtags']
         mongo_client.close()
 
     def is_player(self, words):
