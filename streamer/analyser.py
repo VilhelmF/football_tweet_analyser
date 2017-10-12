@@ -14,7 +14,8 @@ class Analyser:
         self.home_team = home_team
         self.away_team = away_team
         self.config = ConfigParser()
-        self.db_collection = None
+        self.away_team_collection = None
+        self.home_team_collection = None
         self.rabbitmq = None
         self.premier_league = None
         self.setup()
@@ -25,24 +26,34 @@ class Analyser:
 
     def init_db(self):
         self.config.read('config.ini')
+
+        # Retrieve the username and password for the database
         username = urllib.parse.quote_plus(self.config.get('db', 'user'))
         password = urllib.parse.quote_plus(self.config.get('db', 'password'))
+
+        # Connect to the database
         mongo_client = MongoClient('mongodb://%s:%s@' % (username, password) + self.config.get('db', 'db_url'))
         db_connection = mongo_client[self.config.get('db', 'db_name')]
-        self.db_collection = db_connection[home_team.replace(' ', '') + away_team.replace(' ', '')]
+
+        # Get the collections for both teams
+        self.home_team_collection = db_connection[home_team]
+        self.away_team_collection = db_connection[away_team]
+
         print('Database connection to {}.{} established'.format(self.config.get('db', 'db_name'), 'test'))
 
     def init_rabbitmq(self):
         self.config.read('config.ini')
+
         self.rabbitmq = RabbitMQ(
             self.config.get('pika', 'rabbitmq_user'),
             self.config.get('pika', 'rabbitmq_pw'),
             self.config.get('pika', 'rabbitmq_host')
         )
-        queue = home_team + away_team
-        queue = queue.replace(' ', '')
-        self.rabbitmq.init_consumer_thread(queue, self.tweet_callback)
-        print('Rabbit mq connection to {} : {} established'.format(self.config.get('pika', 'rabbitmq_host'), queue))
+
+        self.rabbitmq.init_consumer_thread(home_team, self.tweet_callback)
+        self.rabbitmq.init_consumer_thread(away_team, self.tweet_callback)
+
+        print('Rabbit mq connection to {} : {} - {} established'.format(self.config.get('pika', 'rabbitmq_host'), home_team, away_team))
 
     def init_premier_league(self):
         self.premier_league = PremierLeague()
@@ -62,10 +73,8 @@ class Analyser:
         # print('{}: {}'.format(object_id, text))
 
 if __name__ == '__main__':
-    param = input('Teams: ').split()
-    if len(param) != 2:
-        print('Two teams should be playing.')
-        sys.exit(0)
-    home_team, away_team = param
+    home_team = input('Home Team: ')
+    away_team = input('Away Team: ')
+
     print('Starting analyser for {} - {}'.format(home_team, away_team))
     analyser = Analyser(home_team, away_team)
