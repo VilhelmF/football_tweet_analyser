@@ -17,6 +17,7 @@ class Analyser:
         self.away_team = Team(away_team)
         self.config = ConfigParser()
         self.rabbitmq = None
+        self.collection = None
         self.premier_league = None
         self.setup()
 
@@ -34,6 +35,8 @@ class Analyser:
         # Connect to the database
         mongo_client = MongoClient('mongodb://%s:%s@' % (username, password) + self.config.get('db', 'db_url'))
         db_connection = mongo_client[self.config.get('db', 'db_name')]
+
+        self.collection = db_connection[self.home_team.game_hashtag + self.away_team.game_hashtag]
 
         print('Database connection to {}.{} established'.format(self.config.get('db', 'db_name'), 'test'))
 
@@ -58,9 +61,9 @@ class Analyser:
         home_team_occurrences = [x for x in self.home_team.names if x.lower() in text.lower()]
         away_team_occurrences = [x for x in self.away_team.names if x.lower() in text.lower()]
 
-        if len(home_team_occurrences) != 0 and len(away_team_occurrences) == 0 in text:
+        if len(home_team_occurrences) != 0 and len(away_team_occurrences) == 0:
             return self.home_team
-        elif len(home_team_occurrences) == 0 and len(away_team_occurrences) != 0 in text:
+        elif len(home_team_occurrences) == 0 and len(away_team_occurrences) != 0:
             return self.away_team
         else:
             return None
@@ -91,22 +94,23 @@ class Analyser:
         text_blob = TextBlob(text)
         polarity = text_blob.sentiment.polarity
 
-        tweeted_team = self.get_team_by_names([x.lower() for x in text_blob.noun_phrases])
+        # Try to extract the tweeted team from the names used for both teams
+        tweeted_team = self.get_team_by_names(text)
 
+        # Add the polarity to the json
+        json_body['polarity'] = polarity
+
+        # If we managed to extract a team, save the tweet along with the name of the team
         if tweeted_team is not None:
-            # TODO Prediction Magic
-            print('{}: {}'.format(tweeted_team.name, text))
+            json_body['team'] = tweeted_team.name
+            self.collection.insert_one(json_body)
+        # If not, try to extract the tweeted team based on the teams' hashtags
         else:
             tweeted_team = self.get_team_by_hashtags([x.lower() for x in hashtags])
 
             if tweeted_team is not None:
-                # TODO Prediction Magic
-                print('{}: {}'.format(tweeted_team.name, text))
-
-        json_body['polarity'] = polarity
-
-        # object_id = self.db_collection.insert_one(json_body).inserted_id
-        # print('{}: {}'.format(object_id, text))
+                json_body['team'] = tweeted_team.name
+                self.collection.insert_one(json_body)
 
 if __name__ == '__main__':
 
