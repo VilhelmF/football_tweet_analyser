@@ -50,8 +50,6 @@ def parse_teams():
                 continue
             else:
                 player = ''.join(row)
-                player = player.replace('*', '')
-                player = player.split(', ')[1] + ' ' + player.split(',')[0]
                 working_dict['players'].append(player)
         return premier_leage_teams
 

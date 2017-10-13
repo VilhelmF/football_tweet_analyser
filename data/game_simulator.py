@@ -1,4 +1,5 @@
 import pika
+from pika.exceptions import ConnectionClosed
 import csv
 import datetime
 from datetime import datetime, timedelta
@@ -44,4 +45,8 @@ if __name__ == '__main__':
     while len(game_tweets) > 0:
         tweet = game_tweets.pop()
         str_message = json.dumps(tweet)
-        rabbitmq.publish_message(queue_name, str_message)
+        try:
+            rabbitmq.publish_message(queue_name, str_message)
+        except ConnectionClosed:
+            print('Timeout')
+
