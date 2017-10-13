@@ -8,8 +8,8 @@ from streamer.premier_league import PremierLeague
 from streamer.utils import valid_team
 from streamer.Team import Team
 from textblob import TextBlob
+from textblob.sentiments import NaiveBayesAnalyzer
 import json
-
 
 class Analyser:
     def __init__(self, home_team, away_team):
@@ -104,17 +104,15 @@ class Analyser:
 
         # Use TextBlob for sentiment analysis on the tweet and extract the sentiment
         text_blob = TextBlob(text)
-        polarity = text_blob.sentiment.polarity
+        json_body['polarity'] = text_blob.sentiment.polarity
 
         # Try to extract the tweeted team from the names used for both teams
         tweeted_team = self.get_team_by_names(text)
 
-        # Add the polarity to the json
-        json_body['polarity'] = polarity
-
         # If we managed to extract a team, save the tweet along with the name of the team
         if tweeted_team is not None:
             json_body['team'] = tweeted_team.name
+            json_body['players'] = 0
             self.collection.insert_one(json_body)
         # If not, try to extract the tweeted team based on the teams' hashtags
         else:
@@ -122,13 +120,17 @@ class Analyser:
 
             if tweeted_team is not None:
                 json_body['team'] = tweeted_team.name
+                json_body['players'] = 0
                 self.collection.insert_one(json_body)
             else:
                 tweeted_team = self.get_team_by_players(text_blob.lower().words)
 
                 if tweeted_team is not None:
                     json_body['team'] = tweeted_team.name
+                    json_body['players'] = 1
                     self.collection.insert_one(json_body)
+                else:
+                    print("IGNORED : {}".format(text))
 
 
 if __name__ == '__main__':
