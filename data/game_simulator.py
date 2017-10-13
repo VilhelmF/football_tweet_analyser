@@ -32,9 +32,9 @@ if __name__ == '__main__':
     file_name = input('Filename: ')
     queue_name = input('Queue name: ')
     start_time = input('Start time (%Y-%m-%d %H:%M): ')
-    queue_name = 'LEILIV'
-    start_time = '2017-09-23 16:30'
-    game_tweets = process_tweets('output/leiliv.csv', datetime.strptime(start_time, '%Y-%m-%d %H:%M'))
+    queue_name = 'EVEBOU'
+    start_time = '2017-09-23 14:00'
+    game_tweets = process_tweets('output/evebou.csv', datetime.strptime(start_time, '%Y-%m-%d %H:%M'))
     config = ConfigParser()
     config.read('../streamer/config.ini')
     rabbitmq = RabbitMQ(
