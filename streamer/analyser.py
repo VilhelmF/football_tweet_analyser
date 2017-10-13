@@ -80,6 +80,18 @@ class Analyser:
         else:
             return None
 
+    def get_team_by_players(self, words):
+
+        home_team_players = [x for x in self.home_team.players if x.lower() in words]
+        away_team_players = [x for x in self.away_team.players if x.lower() in words]
+
+        if len(home_team_players) != 0 and len(away_team_players) == 0:
+            return self.home_team
+        elif len(home_team_players) == 0 and len(away_team_players) != 0:
+            return self.away_team
+        else:
+            return None
+
     def init_premier_league(self):
         self.premier_league = PremierLeague()
 
@@ -111,6 +123,13 @@ class Analyser:
             if tweeted_team is not None:
                 json_body['team'] = tweeted_team.name
                 self.collection.insert_one(json_body)
+            else:
+                tweeted_team = self.get_team_by_players(text_blob.lower().words)
+
+                if tweeted_team is not None:
+                    json_body['team'] = tweeted_team.name
+                    self.collection.insert_one(json_body)
+
 
 if __name__ == '__main__':
 
