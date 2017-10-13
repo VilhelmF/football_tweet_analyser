@@ -14,7 +14,7 @@ def get_hashtags():
                 'Everton': {'hashtags': ('EVE', ['EFC']), 'names': ['Everton']},
                 'Huddersfield Town': {'hashtags': ('HUD', ['HTAFC']), 'names': ['Huddersfield']},
                 'Leicester City': {'hashtags': ('LEI', ['LCFC']), 'names': ['Leicester']},
-                'Liverpool': {'hashtags': ('LIV', ['LFC', 'LiverpoolFC']), 'names': ['Liverpool', 'Lpool', 'LFC']},
+                'Liverpool': {'hashtags': ('LIV', ['LFC', 'LiverpoolFC', 'YNWA']), 'names': ['Liverpool', 'Lpool', 'LFC']},
                 'Manchester City': {'hashtags': ('MCI', ['MCFC']), 'names': ['Manchester', 'ManCity', 'City']},
                 'Manchester United': {'hashtags': ('MUN', ['MUFC']), 'names': ['United', 'ManUtd', 'Manchester']},
                 'Newcastle United': {'hashtags': ('NEW', ['NUFC']), 'names': ['Newcastle']},
