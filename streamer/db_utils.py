@@ -16,14 +16,19 @@ def create_connection(collection):
 def get_match_statistics(collection_name):
     db_connection, collection = create_connection(collection_name)
     teams = collection.distinct('team')
-    team1, team2 = {}, {}
-    team1['name'], team2['name'] = teams[:2]
-    for t in [team1, team2]:
+    team1, team2, none = {}, {}, {}
+    team1['name'], team2['name'], none['name'] = teams[:3]
+    for t in [team1, team2, none]:
         t['positive_tweets'] = collection.count({'team': t['name'], 'polarity': {'$gt': 0}})
         t['negative_tweets'] = collection.count({'team': t['name'], 'polarity': {'$lt': 0}})
-    print(collection.count())
-    print(team1)
-    print(team2)
+        t['neutral_tweets'] = collection.count({'team': t['name'], 'polarity': 0})
+        t['discarded_tweets'] = collection.count({'team': 'None'})
+
+    print("Total number of tweets : {}\n".format(collection.count()))
+
+    for x in [team1, team2, none]:
+        if x['name'] != "None":
+            print(x)
     db_connection.close()
 
 
