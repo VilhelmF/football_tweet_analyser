@@ -29,12 +29,12 @@ def process_tweets(file_name, start_datetime):
 
 
 if __name__ == '__main__':
-    file_name = input('Filename: ')
+    '''file_name = input('Filename: ')
     queue_name = input('Queue name: ')
-    start_time = input('Start time (%Y-%m-%d %H:%M): ')
-    queue_name = 'BURHUD'
-    start_time = '2017-09-23 14:00'
-    game_tweets = process_tweets('output/burhud.csv', datetime.strptime(start_time, '%Y-%m-%d %H:%M'))
+    start_time = input('Start time (%Y-%m-%d %H:%M): ')'''
+    queue_name = 'STKCHE'
+    start_time = '2017-09-23 16:00'
+    game_tweets = process_tweets('output/stkche.csv', datetime.strptime(start_time, '%Y-%m-%d %H:%M'))
     config = ConfigParser()
     config.read('../streamer/config.ini')
     rabbitmq = RabbitMQ(
