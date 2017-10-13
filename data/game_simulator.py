@@ -1,4 +1,5 @@
 import pika
+from pika.exceptions import ConnectionClosed
 import csv
 import datetime
 from datetime import datetime, timedelta
@@ -31,9 +32,9 @@ if __name__ == '__main__':
     file_name = input('Filename: ')
     queue_name = input('Queue name: ')
     start_time = input('Start time (%Y-%m-%d %H:%M): ')
-    queue_name = 'LEILIV'
-    start_time = '2017-09-23 16:30'
-    game_tweets = process_tweets('output/leiliv.csv', datetime.strptime(start_time, '%Y-%m-%d %H:%M'))
+    queue_name = 'BURHUD'
+    start_time = '2017-09-23 14:00'
+    game_tweets = process_tweets('output/burhud.csv', datetime.strptime(start_time, '%Y-%m-%d %H:%M'))
     config = ConfigParser()
     config.read('../streamer/config.ini')
     rabbitmq = RabbitMQ(
@@ -44,4 +45,8 @@ if __name__ == '__main__':
     while len(game_tweets) > 0:
         tweet = game_tweets.pop()
         str_message = json.dumps(tweet)
-        rabbitmq.publish_message(queue_name, str_message)
+        try:
+            rabbitmq.publish_message(queue_name, str_message)
+        except ConnectionClosed:
+            print('Timeout')
+

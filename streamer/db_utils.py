@@ -19,15 +19,15 @@ def get_match_statistics(collection_name):
     team1, team2 = {}, {}
     team1['name'], team2['name'] = teams[:2]
     for t in [team1, team2]:
-        t['positive_tweets'] = collection.count({'sentiment': 'positive'})
-        t['negative_tweets'] = collection.count({'sentiment': 'negative'})
+        t['positive_tweets'] = collection.count({'team': t['name'], 'polarity': {'$gt': 0}})
+        t['negative_tweets'] = collection.count({'team': t['name'], 'polarity': {'$lt': 0}})
+    print(collection.count())
     print(team1)
+    print(team2)
     db_connection.close()
 
 
 if __name__ == '__main__':
-    connection, teams = create_connection('teams')
-    print(teams.count())
-    connection.close()
-
-    get_match_statistics('teams')
+    while True:
+        coll = input('Collection name: ')
+        get_match_statistics(coll)
