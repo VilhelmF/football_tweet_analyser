@@ -15,16 +15,16 @@ def get_extra_values():
                 'Huddersfield Town': {'hashtags': ('HUD', ['HTAFC']), 'names': ['Huddersfield', 'Town']},
                 'Leicester City': {'hashtags': ('LEI', ['LCFC']), 'names': ['Leicester']},
                 'Liverpool': {'hashtags': ('LIV', ['LFC', 'LiverpoolFC', 'YNWA']), 'names': ['Liverpool', 'Lpool', 'LFC']},
-                'Manchester City': {'hashtags': ('MCI', ['MCFC' 'manccity']), 'names': ['Manchester', 'ManCity', 'City', 'Man Utd']},
+                'Manchester City': {'hashtags': ('MCI', ['MCFC' 'manccity', 'manchestercity']), 'names': ['Manchester', 'ManCity', 'City', 'Man Utd']},
                 'Manchester United': {'hashtags': ('MUN', ['MUFC']), 'names': ['United', 'ManUtd', 'Manchester']},
                 'Newcastle United': {'hashtags': ('NEW', ['NUFC']), 'names': ['Newcastle']},
-                'Southampton': {'hashtags': ('SOU', ['SaintsFC']), 'names': ['Southampton']},
+                'Southampton': {'hashtags': ('SOU', ['SaintsFC', 'Saints', 'SouthamptonFC']), 'names': ['Southampton']},
                 'Stoke City': {'hashtags': ('STK', ['SCFC']), 'names': ['Stoke']},
                 'Swansea City': {'hashtags': ('SWA', ['Swans']), 'names': ['Swansea', 'Swans']},
                 'Tottenham Hotspur': {'hashtags': ('TOT', ['COYS', 'THFC', 'Spurs']), 'names': ['Tottenham', 'Spurs']},
                 'Watford': {'hashtags': ('WAT', ['WatfordFC']), 'names': ['Watford']},
-                'West Bromwich Albion': {'hashtags': ('WBA', ['baggies', 'WBAFC']), 'names': ['West Brom', 'WBA', 'West Bromvich', 'Albion']},
-                'West Ham United': {'hashtags': ('WHU', ['WHUFC']), 'names': ['West Ham']}
+                'West Bromwich Albion': {'hashtags': ('WBA', ['baggies', 'WBAFC', 'WestBrom']), 'names': ['West Brom', 'WBA', 'West Bromvich', 'Albion']},
+                'West Ham United': {'hashtags': ('WHU', ['WHUFC', 'Hammers', 'WestHam']), 'names': ['West Ham']}
                 }
     return hashtags
 
