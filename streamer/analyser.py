@@ -69,8 +69,8 @@ class Analyser:
 
     def get_team_by_hashtags(self, hashtags):
 
-        home_team_hashtags = set([x.lower() for x in self.home_team.hashtags])
-        away_team_hashtags = set([x.lower() for x in self.away_team.hashtags])
+        home_team_hashtags = set(['#' + x.lower() for x in self.home_team.hashtags])
+        away_team_hashtags = set(['#' + x.lower() for x in self.away_team.hashtags])
 
         if len(home_team_hashtags.intersection(set(hashtags))) == 0 and len(away_team_hashtags.intersection(set(hashtags))) != 0:
             return self.away_team
@@ -120,7 +120,9 @@ class Analyser:
                 json_body['team'] = tweeted_team.name
                 self.collection.insert_one(json_body)
             else:
-                tweeted_team = self.get_team_by_hashtags([x.lower() for x in hashtags])
+
+                if hashtags is not None:
+                    tweeted_team = self.get_team_by_hashtags([x.lower() for x in hashtags])
 
                 if tweeted_team is not None:
                     json_body['team'] = tweeted_team.name
@@ -129,7 +131,6 @@ class Analyser:
                     json_body['team'] = 'None'
                     self.collection.insert_one(json_body)
                     print("IGNORED : {}".format(text))
-
 
 if __name__ == '__main__':
 
