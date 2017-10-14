@@ -48,6 +48,8 @@ if __name__ == '__main__':
 
     tweet_topics.extend(home_team.hashtags)
     tweet_topics.extend(away_team.hashtags)
+    tweet_topics.extend(home_team.names)
+    tweet_topics.extend(away_team.names)
 
     # Create the stream
     twitter_stream = tweepy.Stream(auth=api.auth, listener=listener)
