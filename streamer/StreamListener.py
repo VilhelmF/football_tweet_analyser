@@ -1,5 +1,6 @@
 import tweepy
 import json
+from pika.exceptions import ConnectionClosed
 from .send import send_tweet
 
 
@@ -36,9 +37,12 @@ class MyStreamListener(tweepy.StreamListener):
             # send_tweet('{} : {}'.format(message['author_name'], message['text']))
             str_message = json.dumps(message)
             if self.queue is not None and self.rabbit_mq is not None:
-                # print('StreamListener sending message {}'.format(status.text))
-                self.rabbit_mq.publish_message(self.queue, str_message)
-                # send_tweet(self.queue, str_message)
+                try:
+                    self.rabbit_mq.publish_message(self.queue, str_message)
+                except ConnectionClosed:
+                    print('Timeout')
+                    # print('StreamListener sending message {}'.format(status.text))
+                    # send_tweet(self.queue, str_message)
             # print('{} : {}'.format(message['author_name'], message['text']))
             if self.tweet_counter >= self.max_tweets:
                 return False

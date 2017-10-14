@@ -28,8 +28,9 @@ def get_match_statistics(collection_name):
 
     for x in [team1, team2, none]:
         if x['name'] != "None":
-            print(x)
+            print('{} : {}'.format(x['name'], x['positive_tweets'] / (x['positive_tweets'] + x['negative_tweets'])))
     db_connection.close()
+
 
 def get_match_statistics_time(collection_name, time):
     db_connection, collection = create_connection(collection_name)
@@ -46,13 +47,13 @@ def get_match_statistics_time(collection_name, time):
 
     for x in [team1, team2, none]:
         if x['name'] != "None":
-            print(x)
+            print('{} : {}'.format(x['name'], x['positive_tweets'] / (x['positive_tweets'] + x['negative_tweets'])))
     db_connection.close()
 
 
 if __name__ == '__main__':
     while True:
-        time_question = input("By time? Y/N: ")
+        time_question = input("By my time? Y/N: ")
         coll = input('Collection name: ')
         if time_question.lower() == 'y':
             time = input('Before what time? YYYY-MM-DD HH:MM: ')
