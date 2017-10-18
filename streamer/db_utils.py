@@ -31,6 +31,8 @@ def get_match_statistics(collection_name):
     for x in [team1, team2, none]:
         if x['name'] != "None":
             print('{} : {}'.format(x['name'], x['positive_tweets'] / (x['positive_tweets'] + x['negative_tweets'])))
+            for key, value in x.items():
+                print('{} : {}'.format(key, value))
     db_connection.close()
 
 
